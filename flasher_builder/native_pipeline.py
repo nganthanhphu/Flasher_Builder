@@ -65,6 +65,8 @@ def stage(worker, assets, destination, dev, kind, region, source):
             output = result / 'COS_FILES_HERE'
         output.mkdir(parents=True, exist_ok=True)
         worker.copy(assets / path, output / path.name)
+    # Staged copies are the build inputs now; the manifest copy is dead weight.
+    shutil.rmtree(assets / 'bloat', ignore_errors=True)
     return result
 
 

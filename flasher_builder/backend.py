@@ -526,6 +526,10 @@ def build(args):
         print('STEP 3/5 • Extract partitions and build flasher', flush=True)
         result = build_images(worker, assets, result, download, dev, args.kind, args.region,
                               catalog.super_size(dev, args.region), builder, odm)
+        # The OTA is only read during extraction; free it before packaging.
+        for leftover in ('OTA.zip', 'BASE.zip'):
+            (download / leftover).unlink(missing_ok=True)
+        shutil.rmtree(download / 'matched-odm', ignore_errors=True)
         if not result.is_dir():
             raise BuildError(f'Builder did not create the expected output: {result}')
         boot_dir = result / image_folder(dev, args.region)
