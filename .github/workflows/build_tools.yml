@@ -487,21 +487,6 @@ jobs:
       # ===============================================================================
       # ===============================================================================
 
-      - name: Pre-stage flasher into OTA folder
-        if: ${{ inputs.flasher_type == 'RegionalHybrid Flasher' || inputs.flasher_type == 'SuperHybrid Flasher' }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          src="$WORK_DIR"
-          [ -d "$src" ] || { echo "WORK_DIR not found: $src"; exit 1; }
-          dst="$OTA_DIR/$(basename "$src")"
-          mkdir -p "$dst"
-          rsync -a --info=progress2 "$src/" "$dst/"
-          [ -f "$OUT_DIR/otaripper" ] && cp -f "$OUT_DIR/otaripper" "$OTA_DIR/"
-          
-      # ===============================================================================
-      # ===============================================================================
-
       - name: Run builder
         shell: bash
         working-directory: ${{ env.OTA_DIR }}
@@ -510,6 +495,10 @@ jobs:
           echo "CWD is $(pwd)"
           echo "Calling builder: \"$GITHUB_WORKSPACE/$OUT_DIR/$BUILDER_SH\" \"$OTA_PATH\""
           bash "$GITHUB_WORKSPACE/$OUT_DIR/$BUILDER_SH" "$OTA_PATH"
+
+      - name: Drop OTA download
+        shell: bash
+        run: rm -f "$OTA_DIR/OTA.zip" "$OTA_DIR/BASE.zip"
           
       # ===============================================================================
       # ===============================================================================
