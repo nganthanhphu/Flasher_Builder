@@ -71,10 +71,9 @@ fi
 # Copy flasher dir to build folder
 #----------------------------------
 
-echo "Copying $super_src to build folder"
+echo "Moving $super_src to build folder"
 rm -rf "$super_dest"
-mkdir -p "$super_dest"
-rsync -a "$super_src/" "$super_dest/"
+mv "$super_src" "$super_dest"
 
 # Extract to an explicit directory; otaripper versions may otherwise
 # produce nested or differently named output directories.

@@ -30,8 +30,8 @@ work_root="$input_dir/.ace6_oos_build"
 [[ -d "$template" ]] || { echo "ERROR: Flasher template not found: $template"; exit 1; }
 
 rm -rf "$output" "$work_root"
-mkdir -p "$output" "$work_root/BASE" "$work_root/TARGET"
-rsync -a "$template/" "$output/"
+mkdir -p "$work_root/BASE" "$work_root/TARGET"
+mv "$template" "$output"
 
 extract_ota() {
   local name="$1" ota="$2" dir="$work_root/$1"

@@ -65,10 +65,9 @@ fi
 # Copy flasher dir to build folder
 #----------------------------------
 
-echo "Copying $reg_src to build folder"
+echo "Moving $reg_src to build folder"
 rm -rf "$reg_dest"
-mkdir -p "$reg_dest"
-rsync -a "$reg_src/" "$reg_dest/"
+mv "$reg_src" "$reg_dest"
 
 # Extract to an explicit directory; otaripper versions may otherwise
 # produce nested or differently named output directories.
